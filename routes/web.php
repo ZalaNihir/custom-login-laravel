@@ -17,12 +17,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-// Custom Login
-Route::get('/login', [AuthController::class,'loginform'])->name('loginform');
-Route::post('/login', [AuthController::class,'login'])->name('login');
-
-// Custom Registration
-Route::get('/register', [AuthController::class,'registerform'])->name('registerform');
-Route::post('/register', [AuthController::class,'register'])->name('register');
-Route::any('/logout',[AuthController::class,'logout'])->name('logout');
-Route::get('home',[AuthController::class,'home'])->name('home')->middleware('auth');
+Route::middleware('guest')->group(function(){
+    // Custom Login
+    Route::get('/login', [AuthController::class,'loginform'])->name('loginform');
+    Route::post('/login', [AuthController::class,'login'])->name('login');
+    // Custom Registration
+    Route::get('/register', [AuthController::class,'registerform'])->name('registerform');
+    Route::post('/register', [AuthController::class,'register'])->name('register');
+});
+Route::middleware('auth')->group(function(){
+    Route::any('/logout',[AuthController::class,'logout'])->name('logout');
+    Route::get('home',[AuthController::class,'home'])->name('home');
+});
