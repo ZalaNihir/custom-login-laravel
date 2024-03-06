@@ -24,3 +24,5 @@ Route::post('/login', [AuthController::class,'login'])->name('login');
 // Custom Registration
 Route::get('/register', [AuthController::class,'registerform'])->name('registerform');
 Route::post('/register', [AuthController::class,'register'])->name('register');
+Route::any('/logout',[AuthController::class,'logout'])->name('logout');
+Route::get('home',[AuthController::class,'home'])->name('home')->middleware('auth');

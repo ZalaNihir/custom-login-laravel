@@ -42,10 +42,22 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             // Authentication passed...
-            return redirect()->intended('/dashboard'); // Redirect to dashboard or any desired page
+            return redirect()->intended('/home'); // Redirect to dashboard or any desired page
         }
         return redirect()->back()->withInput($request->only('email'))->withErrors([
             'email' => 'These credentials do not match our records.',
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return redirect()->route('loginform');
+    }
+
+    public function home(Request $request)
+    {
+        $user = Auth::user();
+        return view('home',compact('user'));
     }
 }
